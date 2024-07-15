@@ -23,8 +23,12 @@ def Projects():
 @app.route('/form' , methods=['POST','GET'])
 def form():
     if request.method == 'POST':
-        data = request.form.to_dict()
-        print(data)
+        data = request.get_json
+        name = data.get('name')
+        email = data.get('email')
+
+        return jsonify({'messege': 'Form submitted successfully', 'name': name, 'email': email})
+
     return render_template('form.html')
 
 
