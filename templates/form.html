@@ -47,10 +47,11 @@
 
     <div class="container mt-5">
       <h2>Contact Me</h2>
-      <form>
+      <form id="data-form" action="{{ url_for('form') }}" method="POST">
         <div class="form-group">
           <label for="name">Name</label>
           <input
+            name="name"
             type="text"
             class="form-control"
             id="name"
@@ -61,6 +62,7 @@
         <div class="form-group">
           <label for="email">Email address</label>
           <input
+            name="email"
             type="email"
             class="form-control"
             id="email"
@@ -71,6 +73,7 @@
         <div class="form-group">
           <label for="subject">Subject</label>
           <input
+            name="subject"
             type="text"
             class="form-control"
             id="subject"
@@ -81,6 +84,7 @@
         <div class="form-group">
           <label for="message">Message</label>
           <textarea
+            name="message"
             class="form-control"
             id="message"
             rows="4"
@@ -91,5 +95,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
+    <div id="feedback"></div>
+    <script src="{{url_for('static', filename='js/form.js')}}"></script>
   </body>
 </html>

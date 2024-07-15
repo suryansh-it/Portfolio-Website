@@ -23,11 +23,17 @@ def Projects():
 @app.route('/form' , methods=['POST','GET'])
 def form():
     if request.method == 'POST':
-        data = request.get_json
+        data = request.get_json() #get json data from client
         name = data.get('name')
         email = data.get('email')
+        subject = data.get('subject')
+        message = data.get('message')
+        
+        return jsonify({'messagecontent': f'Form submitted successfully, name: {name}, email: {email},'
+                        f' subject:{subject}, message: {message}' })     #!!reminder: formatted string for each line
+    #return json data to client
+        
 
-        return jsonify({'messege': 'Form submitted successfully', 'name': name, 'email': email})
 
     return render_template('form.html')
 
