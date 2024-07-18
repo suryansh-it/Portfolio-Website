@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response =>response.json()) // convert response to json
       .then(json => {
         feedback.textContent = json.messagecontent; // set feedback message as response
-        form.insertAdjacentElement('beforeend', feedback); // insert feedback message after form
+        form.insertAdjacentElement('beforeend', feedback); // insert feedback message after form      
         console.log('Received response:', json);
         form.reset(); // reset form
         
