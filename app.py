@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for
+from sqlalchemy.dialects.postgresql import JSON
 
 app = Flask(__name__)
 
