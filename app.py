@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for
-from .models import db
+from models import db , Visitor
 
 app = Flask(__name__)
 
@@ -21,27 +21,24 @@ def Projects():
     return render_template('Projects.html')
 
 
-@app.route('/form' , methods=['POST','GET'])
+@app.route('/form', methods=['POST', 'GET'])
 def form():
     if request.method == 'POST':
-        data = request.get_json() #get json data from client
-        new_visitor = Prof_data(
-            name = data['name'], 
-            email = data['email'], 
-            subject = data['subject'], 
-            message = data.get('message',{}))
-        
-    db.session.add(new_visitor)
-    db.session.commit()
-    return jsonify({'message': 'visitor created', 'name': new_visitor.name}), 201
-     #!!reminder: formatted string for each line
-    #return json data to client
-        
+        data = request.get_json()  # Get JSON data from the client
+        new_visitor = Visitor(
+            name=data['name'],
+            email=data['email'],
+            subject=data['subject'],
+            message=data.get('message', '')
+        )
+        db.session.add(new_visitor)
+        db.session.commit()
 
-
+        return jsonify({
+            'messagecontent': f'Form submitted successfully, name: {data["name"]}, email: {data["email"]}, '
+                              f'subject: {data["subject"]}, message: {data["message"]}'
+        })
     return render_template('form.html')
-
-
 
 
 if __name__ == '__main__':
