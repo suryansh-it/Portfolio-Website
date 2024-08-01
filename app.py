@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for
-from sqlalchemy.dialects.postgresql import JSON
+from .models import db
 
 app = Flask(__name__)
 
@@ -25,13 +25,16 @@ def Projects():
 def form():
     if request.method == 'POST':
         data = request.get_json() #get json data from client
-        name = data.get('name')
-        email = data.get('email')
-        subject = data.get('subject')
-        message = data.get('message')
+        new_visitor = Prof_data(
+            name = data['name'], 
+            email = data['email'], 
+            subject = data['subject'], 
+            message = data.get('message',{}))
         
-        return jsonify({'messagecontent': f'Form submitted successfully, name: {name}, email: {email},'
-                        f' subject:{subject}, message: {message}' })     #!!reminder: formatted string for each line
+    db.session.add(new_visitor)
+    db.session.commit()
+    return jsonify({'message': 'visitor created', 'name': new_visitor.name}), 201
+     #!!reminder: formatted string for each line
     #return json data to client
         
 
