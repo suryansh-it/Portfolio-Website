@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for
-from models import db , Visitor
+from models import db , Visitor , BlogData
 
 
 
@@ -56,6 +56,25 @@ def form():
                               f'subject: {data["subject"]}, message: {data["message"]}'
         })
     return render_template('form.html')
+
+
+@app.route('/blogs', methods=['POST', 'GET'])
+def form():
+    if request.method == 'POST':
+        data = request.get_json()  # Get JSON data from the client
+        new_blog = BlogData(
+            title=data['title'],
+            content=data['content'],
+            author=data['author'],
+            
+        )
+        db.session.add(new_blog)
+        db.session.commit()
+
+        return jsonify({
+            'messagecontent': 'Blog created successfully','title' :new_blog.title 
+        })
+    return render_template('blogs.html')
 
 
 if __name__ == '__main__':
