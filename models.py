@@ -17,3 +17,12 @@ class Visitor(db.Model):
 
     # def __repr__(self):
     #     return f'<Prof_data {self.name}>'
+
+class BlogData(db.Model):
+    __tablename__ = 'Blog_Data'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80),   nullable=False)
+    content = db.Column(db.Text , nullable=False)
+    author = db.Column(db.String(80),  nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.now())
