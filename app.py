@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify, url_for
 from models import db , Visitor , BlogData
+from flask_migrate import Migrate
+
 
 
 
@@ -20,14 +22,18 @@ def create_app():
 
 app= create_app()
 
+migrate = Migrate(app, db)
+
 @app.route('/')
 def index():
+    
     return render_template('index.html')
+    
 
 
-@app.route('/Home')
-def home():
-    return render_template('Home.html')
+# @app.route('/Home')
+# def home():
+#     return render_template('Home.html')
 
 @app.route('/About')
 def About():
@@ -62,10 +68,13 @@ def form():
 # Blog post routes
 
 # Route to view a blog post
-# @app.route('/blog/<int:id>', methods=['GET'])
-# def blog(id):
-#     post = BlogData.query.get_or_404(id)
-#     return render_template('view_blog.html', post=post)
+@app.route('/view_blog', methods=['GET'])
+def blog():
+    posts = BlogData.query.all()  # Fetch all blog posts
+    if not posts:
+        # Return a message or redirect if no posts exist
+        return render_template('view_blog.html', posts=None)
+    return render_template('view_blog.html', posts=posts)
 
 
 @app.route('/view_blog', methods=['POST', 'GET'])
@@ -84,19 +93,22 @@ def create_blog():
         return jsonify({
             'messagecontent': 'Blog created successfully','title' :new_blog.title 
         } )
-    return render_template('view_blog.html')
+    return render_template('blog.html')
 
 
-@app.route('/view_blog/<int:id>', methods=["GET"])
-def get_blog(id):
-    post = BlogData.query.get_or_404(id)
-    return jsonify({                    #returns the data via GET
-        'id': post.id,
-        'title': post.title,
-        'content': post.content,
-        'author': post.author,
-        'date_created': post.date_created
-    } , post = post)
+# @app.route('/view_blog/<int:id>', methods=["GET"])
+# def get_blog(id):
+    
+#     post = BlogData.query.get_or_404(id)
+#     if  request.method == 'POST':
+#         return jsonify({                    #returns the data via GET
+#             'id': post.id,
+#             'title': post.title,
+#             'content': post.content,
+#             'author': post.author,
+#             'date_created': post.date_created
+#         } )
+#     return render_template('view_blog.html', post=post)
     
 
 
