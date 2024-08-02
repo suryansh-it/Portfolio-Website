@@ -1,9 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSON
 
-db = SQLAlchemy
+db = SQLAlchemy()
 
-class Prof_data(db.Model):
+class Visitor(db.Model):
     __tablename__ = 'Visitors'
 
     id = db.Column(db.Integer, primary_key=True)
