@@ -1,7 +1,12 @@
 {% extends "base.html" %} {% block title %}Blogs{% endblock %} {% block content
     %} 
-    
-    <div class="blog-post" action="{{ url_for('create_blog') }}" method="POST">
+    <h1>Welcome to the Blog</h1>
+        <div class="text-right">
+            <a href="{{ url_for('create_blog') }}" class="btn btn-primary">Write a Blog Post</a>
+        </div>
+        <hr>
+        <!-- Existing content for displaying blog posts or other information -->
+    <div class="blog-post" action="{{ url_for('get_blog') }}" method="POST">
         <h1 class="blog-title">{{ post.title }}</h1>
         <p class="blog-meta">
             <span><strong>Author:</strong> {{ post.author }}</span> |

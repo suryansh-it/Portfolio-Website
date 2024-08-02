@@ -62,13 +62,13 @@ def form():
 # Blog post routes
 
 # Route to view a blog post
-@app.route('/blog/<int:id>', methods=['GET'])
-def blog(id):
-    post = BlogData.query.get_or_404(id)
-    return render_template('view_blog.html', post=post)
+# @app.route('/blog/<int:id>', methods=['GET'])
+# def blog(id):
+#     post = BlogData.query.get_or_404(id)
+#     return render_template('view_blog.html', post=post)
 
 
-@app.route('/blog', methods=['POST', 'GET'])
+@app.route('/view_blog', methods=['POST', 'GET'])
 def create_blog():
     if request.method == 'POST':
         data = request.get_json()  # Get JSON data from the client
@@ -84,10 +84,10 @@ def create_blog():
         return jsonify({
             'messagecontent': 'Blog created successfully','title' :new_blog.title 
         } )
-    return render_template('blog.html')
+    return render_template('view_blog.html')
 
 
-@app.route('/blog/<int:id>', methods=["GET"])
+@app.route('/view_blog/<int:id>', methods=["GET"])
 def get_blog(id):
     post = BlogData.query.get_or_404(id)
     return jsonify({                    #returns the data via GET
