@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %} 
+    
+    <div class="blog-post">
+        <h1 class="blog-title">{{ post.title }}</h1>
+        <p class="blog-meta">
+            <span><strong>Author:</strong> {{ post.author }}</span> |
+            <span><strong>Date Created:</strong> {{ post.date_created }}</span>
+        </p>
+        <div class="blog-content">
+            <p>{{ post.content }}</p>
+        </div>
+    </div>
+</div>
+    
+    {% endblock %}
+    

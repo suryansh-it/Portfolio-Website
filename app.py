@@ -60,7 +60,7 @@ def form():
 
 
 # Blog post routes
-@app.route('/blogs', methods=['POST', 'GET'])
+@app.route('/blog', methods=['POST', 'GET'])
 def create_blog():
     if request.method == 'POST':
         data = request.get_json()  # Get JSON data from the client
