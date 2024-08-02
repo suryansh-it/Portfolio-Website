@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import JSON
 db = SQLAlchemy()
 
 class Visitor(db.Model):
-    __tablename__ = 'Visitors'
+    __tablename__ = 'Visitor'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80),   nullable=False)
