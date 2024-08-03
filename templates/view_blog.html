@@ -48,7 +48,13 @@
         action="{{ url_for('delete_blog', id=post.id) }}"
         style="display: inline"
       >
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <button
+          type="submit"
+          class="btn btn-danger delete-button"
+          data-post-id="{{ post.id }}"
+        >
+          Delete
+        </button>
       </form>
     </div>
   </div>
@@ -56,4 +62,6 @@
 </div>
 {%else%}
 <p>No blog posts available. Please check back later!</p>
-{% endif %} {% endblock %}
+{% endif %}
+<script src="static\js\delete_blog.js"></script>
+{% endblock %}

@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then((data) => {
                 // Display an alert with the message content from the server response
                 alert(data.messagecontent);
-                // Redirect the user to the "/create_blog" page
+                // Redirect the user to the "/blog" page
                 window.location.href = "/blog";
             });
         });

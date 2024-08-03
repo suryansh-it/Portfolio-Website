@@ -140,7 +140,7 @@ def delete_blog(id):
     post = BlogData.query.get_or_404(id)
     db.session.delete(post)
     db.session.commit()
-    return jsonify({'message': 'Blog post deleted'}, post = post)
+    return jsonify({'message': 'Blog post deleted'})
 
 
 if __name__ == '__main__':
