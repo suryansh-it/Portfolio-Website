@@ -34,7 +34,6 @@
     <div style="display: flex; justify-content: flex-end; align-items: center">
       <form
         action="{{ url_for('update_blog', id=post.id) }}"
-        method="PUT"
         style="display: inline; margin-right: 10px"
       >
         <button
@@ -47,7 +46,6 @@
       </form>
       <form
         action="{{ url_for('delete_blog', id=post.id) }}"
-        method="POST"
         style="display: inline"
       >
         <button type="submit" class="btn btn-danger">Delete</button>

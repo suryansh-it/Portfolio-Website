@@ -68,7 +68,7 @@ def form():
 # Blog post routes
 
 # Route to view a blog post
-@app.route('/view_blog', methods=['GET'])
+@app.route('/blog', methods=['GET'])
 def blog():
 
     if request.method == 'POST':
@@ -113,19 +113,29 @@ def create_blog():
 #         } )
 #     return render_template('view_blog.html', post=post)
     
-#left to do update , delete 
+#left to do  delete 
+@app.route('/blog/<int:id>', methods=['GET'])     
+def get_blog(id):
+    post = BlogData.query.get_or_404(id)
+    return render_template('update_blog.html', post=post)
 
-@app.route('/view_blog/<int:id>', methods=['PUT'])           #updates data
+# GET /blog/<int:id> renders the update form with the current blog data.
+# PUT /blog/<int:id> updates the blog post and returns a JSON response.
+
+@app.route('/blog/<int:id>', methods=['PUT'])          #updates data
 def update_blog(id):
     post = BlogData.query.get_or_404(id)
+    # if request.method == 'POST':
     data = request.get_json()
     post.title = data.get('title', post.title)
     post.content = data.get('content', post.content)
     post.author = data.get('author', post.author)
     db.session.commit()
-    return jsonify({'message': 'Blog updated', 'title': post.title}, post = post)
+    return jsonify({'message': 'Blog updated', 'title': post.title})
+    # return render_template('update_blog.html', post=post)
 
-@app.route('/view_blog/<int:id>', methods=['DELETE'])    #deleting blog
+
+@app.route('/blog/<int:id>', methods=['DELETE'])    #deleting blog
 def delete_blog(id):
     post = BlogData.query.get_or_404(id)
     db.session.delete(post)

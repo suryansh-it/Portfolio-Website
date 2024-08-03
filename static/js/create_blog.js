@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Display an alert with the message content from the server response
                 alert(data.messagecontent);
                 // Redirect the user to the "/create_blog" page
-                window.location.href = "/view_blog";
+                window.location.href = "/blog";
             });
         });
 });
