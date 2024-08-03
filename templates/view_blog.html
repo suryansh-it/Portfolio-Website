@@ -15,6 +15,12 @@
     class="blog-post"
     action="{{ url_for('blog', id=post.id) }}"
     method="GET"
+    style="
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 5px;
+    "
   >
     <h1 class="blog-title">{{ post.title }}</h1>
     <p class="blog-meta">
@@ -24,17 +30,30 @@
     <div class="blog-content">
       <p>{{ post.content }}</p>
     </div>
+
+    <div style="display: flex; justify-content: flex-end; align-items: center">
+      <form
+        action="{{ url_for('update_blog', id=post.id) }}"
+        method="PUT"
+        style="display: inline; margin-right: 10px"
+      >
+        <button
+          type="submit"
+          class="btn btn-danger"
+          style="background-color: yellow; color: black"
+        >
+          Edit
+        </button>
+      </form>
+      <form
+        action="{{ url_for('delete_blog', id=post.id) }}"
+        method="POST"
+        style="display: inline"
+      >
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
   </div>
-  <a href="{{ url_for('update_blog', id=post.id) }}" class="btn btn-secondary"
-    >Edit</a
-  >
-  <form
-    action="{{ url_for('delete_blog', id=post.id) }}"
-    method="POST"
-    style="display: inline"
-  >
-    <button type="submit" class="btn btn-danger">Delete</button>
-  </form>
   {% endfor %}
 </div>
 {%else%}

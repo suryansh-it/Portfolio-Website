@@ -115,7 +115,7 @@ def create_blog():
     
 
 
-@app.route('/blog/<int:id>', methods=['PUT'])           #updates data
+@app.route('/view_blog/<int:id>', methods=['PUT'])           #updates data
 def update_blog(id):
     post = BlogData.query.get_or_404(id)
     data = request.get_json()
@@ -125,8 +125,8 @@ def update_blog(id):
     db.session.commit()
     return jsonify({'message': 'Blog updated', 'title': post.title}, post = post)
 
-@app.route('/blog/<int:id>', methods=['DELETE'])    #deleting blog
-def delete_blog_post(id):
+@app.route('/view_blog/<int:id>', methods=['DELETE'])    #deleting blog
+def delete_blog(id):
     post = BlogData.query.get_or_404(id)
     db.session.delete(post)
     db.session.commit()

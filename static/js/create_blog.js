@@ -1,6 +1,6 @@
-document
-        .getElementById("create-blog-form")
-        .addEventListener("submit", function (event) {
+document.addEventListener("DOMContentLoaded", function(){
+document.getElementById("create-blog-form")
+        document.addEventListener("submit", function (event) {
           event.preventDefault();
           let form = event.target;
           let data = {
@@ -18,6 +18,7 @@ document
             .then((response) => response.json())
             .then((data) => {
               alert(data.messagecontent);
-              window.location.href = "/";
+              window.location.href = "/create_blog";
             });
         });
+    });
