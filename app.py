@@ -113,7 +113,7 @@ def create_blog():
 #         } )
 #     return render_template('view_blog.html', post=post)
     
-
+#left to do update , delete 
 
 @app.route('/view_blog/<int:id>', methods=['PUT'])           #updates data
 def update_blog(id):
