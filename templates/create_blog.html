@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block content %}
+<h1>Create Blog Post</h1>
+<form action="{{ url_for('create_blog') }}" method="POST">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" name="title" required />
+  </div>
+  <div class="form-group">
+    <label for="content">Content</label>
+    <textarea
+      class="form-control"
+      id="content"
+      name="content"
+      rows="5"
+      required
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label for="author">Author</label>
+    <input
+      type="text"
+      class="form-control"
+      id="author"
+      name="author"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+<script src="static\js\create_blog.js"></script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, url_for
+from flask import Flask, render_template, request, jsonify, url_for,redirect
 from models import db , Visitor , BlogData
 from flask_migrate import Migrate
 
@@ -70,6 +70,10 @@ def form():
 # Route to view a blog post
 @app.route('/view_blog', methods=['GET'])
 def blog():
+
+    if request.method == 'POST':
+        return redirect(url_for('create_blog'))
+
     posts = BlogData.query.all()  # Fetch all blog posts
     if not posts:
         # Return a message or redirect if no posts exist
@@ -77,23 +81,22 @@ def blog():
     return render_template('view_blog.html', posts=posts)
 
 
-@app.route('/view_blog', methods=['POST', 'GET'])
+@app.route('/create_blog', methods=['POST', 'GET'])
 def create_blog():
     if request.method == 'POST':
         data = request.get_json()  # Get JSON data from the client
         new_blog = BlogData(
             title=data['title'],
             content=data['content'],
-            author=data['author'],
-            
+            author=data['author'],    
         )
         db.session.add(new_blog)
         db.session.commit()
-        
+        # return redirect(url_for('view_blog'))
         return jsonify({
             'messagecontent': 'Blog created successfully','title' :new_blog.title 
         } )
-    return render_template('blog.html')
+    return render_template('create_blog.html')
 
 
 # @app.route('/view_blog/<int:id>', methods=["GET"])
