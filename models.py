@@ -41,4 +41,4 @@ class CommentData(db.Model):
     content = db.Column(db.Text , nullable=False)
     author = db.Column(db.String(80),  nullable=False)
     date_created = db.Column(db.DateTime, default=db.func.now())
-    blog_id = db.Column(db.Integer, db.ForeignKey('blog_data.id'), nullable= False) #blog_id fk references id in blog_data
+    blog_id = db.Column(db.Integer, db.ForeignKey('Blog_Data.id'), nullable= False) #blog_id fk references id in blog_data

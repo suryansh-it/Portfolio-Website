@@ -18,8 +18,8 @@ def create_app():
     with app.app_context():
         db.create_all()  # Create tables based on the model definitions
 
+    
     return app
-
 app= create_app()
 
 migrate = Migrate(app, db)
@@ -66,104 +66,105 @@ def form():
 
 
 # Blog post routes
-
+def blog_post_routes():
 # Route to view a blog post
-@app.route('/blog', methods=['GET'])
-def blog():
+    @app.route('/blog', methods=['GET'])
+    def blog():
 
-    if request.method == 'POST':
-        return redirect(url_for('create_blog'))
+        if request.method == 'POST':
+            return redirect(url_for('create_blog'))
 
-    posts = BlogData.query.all()  # Fetch all blog posts
-    if not posts:
-        # Return a message or redirect if no posts exist
-        return render_template('view_blog.html', posts=None)
-    return render_template('view_blog.html', posts=posts)
+        posts = BlogData.query.all()  # Fetch all blog posts
+        if not posts:
+            # Return a message or redirect if no posts exist
+            return render_template('view_blog.html', posts=None)
+        return render_template('view_blog.html', posts=posts)
 
 
-@app.route('/create_blog', methods=['POST', 'GET'])
-def create_blog():
-    if request.method == 'POST':
-        data = request.get_json()  # Get JSON data from the client
-        new_blog = BlogData(
-            title=data['title'],
-            content=data['content'],
-            author=data['author'],    
-        )
-        db.session.add(new_blog)
+    @app.route('/create_blog', methods=['POST', 'GET'])
+    def create_blog():
+        if request.method == 'POST':
+            data = request.get_json()  # Get JSON data from the client
+            new_blog = BlogData(
+                title=data['title'],
+                content=data['content'],
+                author=data['author'],    
+            )
+            db.session.add(new_blog)
+            db.session.commit()
+            # return redirect(url_for('view_blog'))
+            return jsonify({
+                'messagecontent': 'Blog created successfully','title' :new_blog.title 
+            } )
+        return render_template('create_blog.html')
+
+
+    # @app.route('/view_blog/<int:id>', methods=["GET"])
+    # def get_blog(id):
+        
+    #     post = BlogData.query.get_or_404(id)
+    #     if  request.method == 'POST':
+    #         return jsonify({                    #returns the data via GET
+    #             'id': post.id,
+    #             'title': post.title,
+    #             'content': post.content,
+    #             'author': post.author,
+    #             'date_created': post.date_created
+    #         } )
+    #     return render_template('view_blog.html', post=post)
+        
+    #left to do  delete 
+    @app.route('/blog/<int:id>', methods=['GET'])     
+    def get_blog(id):
+        post = BlogData.query.get_or_404(id)
+        return render_template('update_blog.html', post=post)
+
+    # GET /blog/<int:id> renders the update form with the current blog data.
+    # PUT /blog/<int:id> updates the blog post and returns a JSON response.
+
+    @app.route('/blog/<int:id>', methods=['PUT'])          #updates data
+    def update_blog(id):
+        post = BlogData.query.get_or_404(id)
+        # if request.method == 'POST':
+        data = request.get_json()
+        post.title = data.get('title', post.title)
+        post.content = data.get('content', post.content)
+        post.author = data.get('author', post.author)
         db.session.commit()
-        # return redirect(url_for('view_blog'))
-        return jsonify({
-            'messagecontent': 'Blog created successfully','title' :new_blog.title 
-        } )
-    return render_template('create_blog.html')
+        return jsonify({'message': 'Blog updated', 'title': post.title})
+        # return render_template('update_blog.html', post=post)
 
 
-# @app.route('/view_blog/<int:id>', methods=["GET"])
-# def get_blog(id):
-    
-#     post = BlogData.query.get_or_404(id)
-#     if  request.method == 'POST':
-#         return jsonify({                    #returns the data via GET
-#             'id': post.id,
-#             'title': post.title,
-#             'content': post.content,
-#             'author': post.author,
-#             'date_created': post.date_created
-#         } )
-#     return render_template('view_blog.html', post=post)
-    
-#left to do  delete 
-@app.route('/blog/<int:id>', methods=['GET'])     
-def get_blog(id):
-    post = BlogData.query.get_or_404(id)
-    return render_template('update_blog.html', post=post)
-
-# GET /blog/<int:id> renders the update form with the current blog data.
-# PUT /blog/<int:id> updates the blog post and returns a JSON response.
-
-@app.route('/blog/<int:id>', methods=['PUT'])          #updates data
-def update_blog(id):
-    post = BlogData.query.get_or_404(id)
-    # if request.method == 'POST':
-    data = request.get_json()
-    post.title = data.get('title', post.title)
-    post.content = data.get('content', post.content)
-    post.author = data.get('author', post.author)
-    db.session.commit()
-    return jsonify({'message': 'Blog updated', 'title': post.title})
-    # return render_template('update_blog.html', post=post)
-
-
-@app.route('/blog/<int:id>', methods=['DELETE'])    #deleting blog
-def delete_blog(id):
-    post = BlogData.query.get_or_404(id)
-    db.session.delete(post)
-    db.session.commit()
-    return jsonify({'message': 'Blog post deleted'})
+    @app.route('/blog/<int:id>', methods=['DELETE'])    #deleting blog
+    def delete_blog(id):
+        post = BlogData.query.get_or_404(id)
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({'message': 'Blog post deleted'})
 
 # comments functionaltiy
 
-@app.route('/blog', methods=['POST', 'GET'])
-def add_comment(id):
-    post = BlogData.query.get_or_404(id)
-    data = request.get_json()
-    new_comment = CommentData(
-        content=data['content'],
-        author=data['author'],
-        blog=post
-    )
-    db.session.add(new_comment)
-    db.session.commit()
-    return jsonify({'message': 'Comment added'})
+# @app.route('/blog', methods=['POST', 'GET'])
+# def add_comment(id):
+#     post = BlogData.query.get_or_404(id)
+#     data = request.get_json()
+#     new_comment = CommentData(
+#         content=data['content'],
+#         author=data['author'],
+#         blog=post
+#     )
+#     db.session.add(new_comment)
+#     db.session.commit()
+#     return jsonify({'message': 'Comment added'})
     
 
-@app.route('/blog/<int:post_id>', methods=['GET'])
-def view_blog(id):
-    post = BlogData.query.get_or_404(id)
-    comments = CommentData.query.filter_by(blog_id=id).all()
-    return render_template('view_blog.html', post=post, comments=comments)
+# @app.route('/blog/<int:post_id>', methods=['GET'])
+# def view_blog(id):
+#     post = BlogData.query.get_or_404(id)
+#     comments = CommentData.query.filter_by(blog_id=id).all()
+#     return render_template('view_blog.html', post=post, comments=comments)
 
 
 if __name__ == '__main__':
+    blog_post_routes()
     app.run(debug=True)
