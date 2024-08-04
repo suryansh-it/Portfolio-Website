@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for,redirect
-from models import db , Visitor , BlogData
+from models import db , Visitor , BlogData ,CommentData
 from flask_migrate import Migrate
 
 
@@ -145,8 +145,24 @@ def delete_blog(id):
 # comments functionaltiy
 
 @app.route('/blog', methods=['POST', 'GET'])
-def create_comment():
+def add_comment(id):
+    post = BlogData.query.get_or_404(id)
+    data = request.get_json()
+    new_comment = CommentData(
+        content=data['content'],
+        author=data['author'],
+        blog=post
+    )
+    db.session.add(new_comment)
+    db.session.commit()
+    return jsonify({'message': 'Comment added'})
     
+
+@app.route('/blog/<int:post_id>', methods=['GET'])
+def view_blog(id):
+    post = BlogData.query.get_or_404(id)
+    comments = CommentData.query.filter_by(blog_id=id).all()
+    return render_template('view_blog.html', post=post, comments=comments)
 
 
 if __name__ == '__main__':
