@@ -47,7 +47,7 @@ def Projects():
 @app.route('/form', methods=['POST', 'GET'])
 def form():
     if request.method == 'POST':
-        data = request.get_json()  # Get JSON data from the client
+        data = request.get_json()  # Get JSON data from the client / request body
         new_visitor = Visitor(
             name=data['name'],
             email=data['email'],
@@ -141,6 +141,12 @@ def delete_blog(id):
     db.session.delete(post)
     db.session.commit()
     return jsonify({'message': 'Blog post deleted'})
+
+# comments functionaltiy
+
+@app.route('/blog', methods=['POST', 'GET'])
+def create_comment():
+    
 
 
 if __name__ == '__main__':

@@ -27,3 +27,18 @@ class BlogData(db.Model):
     content = db.Column(db.Text , nullable=False)
     author = db.Column(db.String(80),  nullable=False)
     date_created = db.Column(db.DateTime, default=db.func.now())
+    comments = db.relationship('CommentData', backref='blog', lazy=True) #one to many relationship
+
+# backref='blog' : it allows you to access the blog post from a comment using comment.blog.
+#lazy=True :  comments are not immediately loaded when the blog post is queried.
+    #       Instead, they are loaded when the comments attribute is accessed for the first time
+
+
+class CommentData(db.Model):
+    __tablename__ = 'Comment_Data'
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text , nullable=False)
+    author = db.Column(db.String(80),  nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.now())
+    blog_id = db.Column(db.Integer, db.ForeignKey('blog_data.id'), nullable= False) #blog_id fk references id in blog_data
