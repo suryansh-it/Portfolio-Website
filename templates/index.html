@@ -1,2 +1,17 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %} {% endblock %}
+<!-- Admin Button -->
+
+<footer>
+  <div class="sticky-button">
+    {% if 'admin' in session %}
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary"
+      >Admin Dashboard</a
+    >
+    {% else %}
+    <a href="{{ url_for('admin_login') }}" class="btn btn-primary"
+      >Admin Login</a
+    >
+    {% endif %}
+  </div>
+</footer>

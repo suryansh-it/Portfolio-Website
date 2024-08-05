@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, jsonify, url_for,redirect
-from models import db , Visitor , BlogData ,CommentData
+from flask import Flask, render_template, request, jsonify, url_for,redirect ,session , flash
+from models import db , Visitor , BlogData ,CommentData , AdminData
 from flask_migrate import Migrate
+ 
 
 
 
@@ -164,6 +165,29 @@ def blog_post_routes():
 #     comments = CommentData.query.filter_by(blog_id=id).all()
 #     return render_template('view_blog.html', post=post, comments=comments)
 
+def admin_routes():
+    @app.route('/admin/login', methods=['GET', 'POST'])
+    def admin_login():
+        if request.method == "POST":
+            username= request.form['username']
+            password= request.form['password']
+            admin = AdminData.query.filter_by(username= username).first()
+            if admin and admin.check_password(password):        #if admin record was found and password matches
+                session['admin'] = admin.username               #If the login is successful, the admin's username is stored in the session
+                return redirect(url_for('admin_dashboard'))
+            flash('Invalid username or password')               #if login fails
+        return render_template('admin_login.html')
+
+    @app.route('/admin/dashboard')
+    def admin_dashboard():
+        if 'admin' not in session:
+            return redirect(url_for('admin_login'))
+        return render_template('admin_dashboard.html')
+
+    @app.route('/admin/logout')
+    def admin_logout():
+        session.clear()
+        return redirect(url_for('admin_login'))
 
 if __name__ == '__main__':
     blog_post_routes()
