@@ -41,10 +41,10 @@ def About():
     return render_template('About.html')
 
 def project_routes():
-    @app.route('/Projects', methods=[ 'GET'])
+    @app.route('/Project', methods=[ 'GET'])
     def Projects():
         projects = ProjectData.query.all()
-        return render_template('view_projects.html', projects=projects)
+        return render_template('view_project.html', projects=projects)
 
 
     @app.route('/add_project', methods=['POST', 'GET'])
@@ -224,6 +224,7 @@ def admin_routes():
         return redirect(url_for('admin_login'))
 
 if __name__ == '__main__':
+    project_routes()
     admin_routes()
     blog_post_routes()
     app.run(debug=True)

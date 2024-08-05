@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Add Project{% endblock %} {% block
+content %}
+<div class="container">
+  <h1>Create New Project</h1>
+  <form id="create-project-form">
+    <div class="form-group">
+      <label for="project_name">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="project_name"
+        name="project_name"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for=" project_summary">Summary</label>
+      <textarea
+        class="form-control"
+        id=" project_summary"
+        name=" project_summary"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Project</button>
+  </form>
+</div>
+<script src="static\js\create_project.js"></script>
+{% endblock %}

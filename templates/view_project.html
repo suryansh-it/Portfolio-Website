@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block title %}Projects{% endblock %} {% block
+content %}
+<div class="container">
+  <h1>Projects</h1>
+
+  {% if projects %}
+  <div class="list-group">
+    {% for project in projects %}
+
+    <div
+      class="project-item"
+      style="
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 5px;
+      "
+    >
+      <h1 class="project-title">{{ project.project_name }}</h1>
+      <!-- <p class="project-meta">
+                <span><strong>Technology:</strong> {{ project.technology }}</span>
+            </p> -->
+      <div class="project-description">
+        <p>{{ project.project_summary }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>No projects available.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
