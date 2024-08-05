@@ -21,33 +21,36 @@ def create_app():
 
     
     return app
-app= create_app()
 
+app= create_app()
 migrate = Migrate(app, db)
 
 @app.route('/')
 def index():
     
     return render_template('index.html')
-    
 
 
-# @app.route('/Home')
-# def home():
-#     return render_template('Home.html')
 
-@app.route('/about', methods=['GET', 'POST'])
-def about():
-    about_section = AboutSection.query.first()
-    if request.method == 'POST':
-        data = request.get_json()
-        new_about = AboutSection(content=data['content'])
-        db.session.add(new_about)
-        db.session.commit()
-        return jsonify({'message': 'About section updated successfully'})
-    
-    return render_template('about.html', about=about_section)
 
+# ----------About Routes----------
+def about_routes():
+    @app.route('/about', methods=['GET', 'POST'])
+    def about():
+        about_section = AboutSection.query.first()
+        if request.method == 'POST':
+            data = request.get_json()
+            new_about = AboutSection(content=data['content'])
+            db.session.add(new_about)
+            db.session.commit()
+            return jsonify({'message': 'About section updated successfully'})
+        
+        return render_template('about.html', about=about_section)
+
+
+
+
+# ----------Project Routes----------
 def project_routes():
     @app.route('/Project', methods=[ 'GET'])
     def Projects():
@@ -55,7 +58,140 @@ def project_routes():
         return render_template('view_project.html', projects=projects)
 
 
-    @app.route('/add_project', methods=['POST', 'GET'])
+  
+
+# ----------Contact Form Routes----------
+def contact_form_route():
+    @app.route('/form', methods=['POST', 'GET'])
+    def form():
+        if request.method == 'POST':
+            data = request.get_json()  # Get JSON data from the client / request body
+            new_visitor = Visitor(
+                name=data['name'],
+                email=data['email'],
+                subject=data['subject'],
+                message=data.get('message', '')
+            )
+            db.session.add(new_visitor)
+            db.session.commit()
+
+            return jsonify({
+                'messagecontent': f'Form submitted successfully, name: {data["name"]}, email: {data["email"]}, '
+                                f'subject: {data["subject"]}, message: {data["message"]}'
+            })
+        return render_template('form.html')
+
+
+
+
+# ----------Blog Post Routes----------
+def blog_post_routes():
+# Route to view a blog post
+    @app.route('/blog', methods=['GET'])
+    def blog():
+
+        if request.method == 'POST':
+            return redirect(url_for('create_blog'))
+
+        posts = BlogData.query.all()  # Fetch all blog posts
+        if not posts:
+            # Return a message or redirect if no posts exist
+            return render_template('view_blog.html', posts=None)
+        return render_template('view_blog.html', posts=posts)
+
+
+    
+
+
+    # @app.route('/view_blog/<int:id>', methods=["GET"])
+    # def get_blog(id):
+        
+    #     post = BlogData.query.get_or_404(id)
+    #     if  request.method == 'POST':
+    #         return jsonify({                    #returns the data via GET
+    #             'id': post.id,
+    #             'title': post.title,
+    #             'content': post.content,
+    #             'author': post.author,
+    #             'date_created': post.date_created
+    #         } )
+    #     return render_template('view_blog.html', post=post)
+        
+    
+   
+
+    # GET /blog/<int:id> renders the update form with the current blog data.
+    # PUT /blog/<int:id> updates the blog post and returns a JSON response.
+
+    
+
+
+# ----------Admin Routes----------
+def admin_routes():
+
+    @app.route('/admin/login', methods=['GET', 'POST'])
+    def admin_login():
+        if request.method == "POST":
+            username= request.form['username']
+            password= request.form['password']
+            admin = AdminData.query.filter_by(username= username).first()
+            if admin and admin.check_password(password):        #if admin record was found and password matches
+                session['admin'] = admin.username               #If the login is successful, the admin's username is stored in the session
+                return redirect(url_for('admin_dashboard'))
+            flash('Invalid username or password')               #if login fails
+        return render_template('admin_login.html')
+
+    @app.route('/admin/dashboard',methods=['GET', 'POST'])
+    def admin_dashboard():
+        if 'admin' not in session:
+            return redirect(url_for('admin_login'))
+        return render_template('admin_dashboard.html')
+
+    @app.route('/admin/logout',methods=['GET', 'POST'])
+    def admin_logout():
+        session.clear()
+        return redirect(url_for('admin_login'))
+
+
+# ----------Admin Dashboard----------
+def admin_dashboard_content():
+
+    # -----------------ABOUT---------------------
+
+    @app.route('/admin/dashboard/add_about', methods=['POST', 'GET'])
+    def add_about():
+        if request.method == 'POST':
+            data = request.get_json()  # Get JSON data from the client
+            adding_about = ProjectData(
+                content=data['content'],
+            )
+            db.session.add(adding_about)
+            db.session.commit()
+            
+            return jsonify({
+                'messagecontent': 'about added successfully'
+            } )                 
+        return render_template('admin_dashboard.html')
+
+    @app.route('/admin/dashboard/get_about', methods=['GET'])     
+    def get_about():
+        about_section = AboutSection.query.all()
+        return render_template('admin_dashboard.html',about_section=about_section )
+
+    @app.route('/admin/dashboard/edit_about',method=["PUT"])
+    def edit_about():
+        about_section = AboutSection.query.all()
+        data = request.get_json()
+        about_section.content = data.get("content", about_section.content)
+        db.session.commit()
+        return jsonify({'message': 'about updated'})
+
+
+
+
+    # -----------------PROJECTS---------------------
+
+    @app.route('/admin/dashboard/add_project', methods=['POST', 'GET'])
     def add_project():
         if request.method == 'POST':
             data = request.get_json()  # Get JSON data from the client
@@ -72,53 +208,36 @@ def project_routes():
             } )                 
         return render_template('add_project.html')
 
-    @app.route('/Project/<int:id>', methods=['DELETE'])    #deleting project
+    
+    @app.route('/admin/dashboard/get_project/<int:id>', methods=['GET'])     
+    def get_project(id):
+        project = ProjectData.query.get_or_404(id)
+        return render_template('admin_dashboard.html', project= project)
+    
+    @app.route('/admin/dashboard/edit_projects/<int:id>',method=["PUT"])
+    def edit_projects(id):
+        project = ProjectData.query.get_or_404(id)
+        data = request.get_json()
+        project.project_name = data.get('project_name',project.project_name)
+        project.project_summary = data.get('project_summary',project.project_summary)
+        db.session.commit()
+        return jsonify({'message': 'project updated', 'project_name': project.project_name})
+
+
+    @app.route('/admin/dashboard/delete_project/<int:id>', methods=['DELETE'])    #deleting project
     def delete_project(id):
-        post = ProjectData.query.get_or_404(id)
-        db.session.delete(post)
+        project = ProjectData.query.get_or_404(id)
+        db.session.delete(project)
         db.session.commit()
         return jsonify({'message': 'project post deleted'})
 
 
 
-@app.route('/form', methods=['POST', 'GET'])
-def form():
-    if request.method == 'POST':
-        data = request.get_json()  # Get JSON data from the client / request body
-        new_visitor = Visitor(
-            name=data['name'],
-            email=data['email'],
-            subject=data['subject'],
-            message=data.get('message', '')
-        )
-        db.session.add(new_visitor)
-        db.session.commit()
-
-        return jsonify({
-            'messagecontent': f'Form submitted successfully, name: {data["name"]}, email: {data["email"]}, '
-                              f'subject: {data["subject"]}, message: {data["message"]}'
-        })
-    return render_template('form.html')
 
 
+    # -----------------BLOGS---------------------
 
-# Blog post routes
-def blog_post_routes():
-# Route to view a blog post
-    @app.route('/blog', methods=['GET'])
-    def blog():
-
-        if request.method == 'POST':
-            return redirect(url_for('create_blog'))
-
-        posts = BlogData.query.all()  # Fetch all blog posts
-        if not posts:
-            # Return a message or redirect if no posts exist
-            return render_template('view_blog.html', posts=None)
-        return render_template('view_blog.html', posts=posts)
-
-
-    @app.route('/create_blog', methods=['POST', 'GET'])
+    @app.route('/admin/dashboard/create_blog', methods=['POST', 'GET'])
     def create_blog():
         if request.method == 'POST':
             data = request.get_json()  # Get JSON data from the client
@@ -136,30 +255,13 @@ def blog_post_routes():
         return render_template('create_blog.html')
 
 
-    # @app.route('/view_blog/<int:id>', methods=["GET"])
-    # def get_blog(id):
-        
-    #     post = BlogData.query.get_or_404(id)
-    #     if  request.method == 'POST':
-    #         return jsonify({                    #returns the data via GET
-    #             'id': post.id,
-    #             'title': post.title,
-    #             'content': post.content,
-    #             'author': post.author,
-    #             'date_created': post.date_created
-    #         } )
-    #     return render_template('view_blog.html', post=post)
-        
-    #left to do  delete 
-    @app.route('/blog/<int:id>', methods=['GET'])     
+    @app.route('/admin/dashboard/get_blog/<int:id>', methods=['GET'])     
     def get_blog(id):
         post = BlogData.query.get_or_404(id)
         return render_template('update_blog.html', post=post)
 
-    # GET /blog/<int:id> renders the update form with the current blog data.
-    # PUT /blog/<int:id> updates the blog post and returns a JSON response.
 
-    @app.route('/blog/<int:id>', methods=['PUT'])          #updates data
+    @app.route('/admin/dashboard/update_blog/<int:id>', methods=['PUT'])          #updates data
     def update_blog(id):
         post = BlogData.query.get_or_404(id)
         # if request.method == 'POST':
@@ -172,12 +274,29 @@ def blog_post_routes():
         # return render_template('update_blog.html', post=post)
 
 
-    @app.route('/blog/<int:id>', methods=['DELETE'])    #deleting blog
+    @app.route('/admin/dashboard/delete_blog/<int:id>', methods=['DELETE'])    #deleting blog
     def delete_blog(id):
         post = BlogData.query.get_or_404(id)
         db.session.delete(post)
         db.session.commit()
         return jsonify({'message': 'Blog post deleted'})
+
+
+
+
+if __name__ == '__main__':
+    about_routes()
+    contact_form_route()
+    project_routes()
+    admin_routes()
+    blog_post_routes()
+    admin_dashboard_content()
+    app.run(debug=True)
+
+
+
+
+
 
 # comments functionaltiy
 
@@ -201,38 +320,3 @@ def blog_post_routes():
 #     comments = CommentData.query.filter_by(blog_id=id).all()
 #     return render_template('view_blog.html', post=post, comments=comments)
 
-
-
-
-
-
-# ----------Admin Routes----------
-def admin_routes():
-    @app.route('/admin/login', methods=['GET', 'POST'])
-    def admin_login():
-        if request.method == "POST":
-            username= request.form['username']
-            password= request.form['password']
-            admin = AdminData.query.filter_by(username= username).first()
-            if admin and admin.check_password(password):        #if admin record was found and password matches
-                session['admin'] = admin.username               #If the login is successful, the admin's username is stored in the session
-                return redirect(url_for('admin_dashboard'))
-            flash('Invalid username or password')               #if login fails
-        return render_template('admin_login.html')
-
-    @app.route('/admin/dashboard')
-    def admin_dashboard():
-        if 'admin' not in session:
-            return redirect(url_for('admin_login'))
-        return render_template('admin_dashboard.html')
-
-    @app.route('/admin/logout')
-    def admin_logout():
-        session.clear()
-        return redirect(url_for('admin_login'))
-
-if __name__ == '__main__':
-    project_routes()
-    admin_routes()
-    blog_post_routes()
-    app.run(debug=True)
