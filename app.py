@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for,redirect ,session , flash
-from models import db , Visitor , BlogData ,CommentData , AdminData
+from models import db , Visitor , BlogData ,CommentData ,ProjectData, AdminData
 from flask_migrate import Migrate
  
 
@@ -40,9 +40,32 @@ def index():
 def About():
     return render_template('About.html')
 
-@app.route('/Projects')
-def Projects():
-    return render_template('Projects.html')
+def project_routes():
+    @app.route('/Projects', methods=[ 'GET'])
+    def Projects():
+        projects = ProjectData.query.all()
+        return render_template('view_projects.html', projects=projects)
+
+
+    @app.route('/add_project', methods=['POST', 'GET'])
+    def add_project():
+        if request.method == 'POST':
+            data = request.get_json()  # Get JSON data from the client
+            new_project = ProjectData(
+                project_name=data['project_name'],
+                project_summary=data['project_summary'],
+                  
+            )
+            db.session.add(new_project)
+            db.session.commit()
+            # return redirect(url_for('view_blog'))
+            return jsonify({
+                'messagecontent': 'project added successfully','title' :new_project.project_name 
+            } )                 
+        return render_template('add_project.html')
+
+
+
 
 
 @app.route('/form', methods=['POST', 'GET'])
@@ -165,6 +188,12 @@ def blog_post_routes():
 #     comments = CommentData.query.filter_by(blog_id=id).all()
 #     return render_template('view_blog.html', post=post, comments=comments)
 
+
+
+
+
+
+# ----------Admin Routes----------
 def admin_routes():
     @app.route('/admin/login', methods=['GET', 'POST'])
     def admin_login():
