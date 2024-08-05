@@ -58,13 +58,18 @@ def project_routes():
             )
             db.session.add(new_project)
             db.session.commit()
-            # return redirect(url_for('view_blog'))
+            
             return jsonify({
                 'messagecontent': 'project added successfully','title' :new_project.project_name 
             } )                 
         return render_template('add_project.html')
 
-
+    @app.route('/Project/<int:id>', methods=['DELETE'])    #deleting project
+    def delete_project(id):
+        post = ProjectData.query.get_or_404(id)
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({'message': 'project post deleted'})
 
 
 
