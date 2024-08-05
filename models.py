@@ -44,6 +44,12 @@ class CommentData(db.Model):
     date_created = db.Column(db.DateTime, default=db.func.now())
     blog_id = db.Column(db.Integer, db.ForeignKey('Blog_Data.id'), nullable= False) #blog_id fk references id in blog_data
 
+class ProjectData(db.Model):
+    __tablename__ = 'Project_Data'
+    id = db.Column(db.Integer, primary_key=True)
+    project_name = db.Column(db.String(80),  nullable=False)
+    project_summary = db.Column(db.Text , nullable=False)
+    
 
 class AdminData(db.Model):
     __tablename__ = 'Admin_Data'

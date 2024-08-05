@@ -190,5 +190,6 @@ def admin_routes():
         return redirect(url_for('admin_login'))
 
 if __name__ == '__main__':
+    admin_routes()
     blog_post_routes()
     app.run(debug=True)
