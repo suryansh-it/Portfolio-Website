@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for,redirect ,session , flash
-from models import db , Visitor , BlogData ,CommentData ,ProjectData, AdminData
+from models import db , Visitor , BlogData ,CommentData ,ProjectData, AdminData, AboutSection
 from flask_migrate import Migrate
  
 
@@ -36,9 +36,17 @@ def index():
 # def home():
 #     return render_template('Home.html')
 
-@app.route('/About')
-def About():
-    return render_template('About.html')
+@app.route('/about', methods=['GET', 'POST'])
+def about():
+    about_section = AboutSection.query.first()
+    if request.method == 'POST':
+        data = request.get_json()
+        new_about = AboutSection(content=data['content'])
+        db.session.add(new_about)
+        db.session.commit()
+        return jsonify({'message': 'About section updated successfully'})
+    
+    return render_template('about.html', about=about_section)
 
 def project_routes():
     @app.route('/Project', methods=[ 'GET'])

@@ -51,6 +51,11 @@ class ProjectData(db.Model):
     project_summary = db.Column(db.Text , nullable=False)
     
 
+class AboutSection(db.Model):
+    __tablename__ = 'About_Section'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+
 class AdminData(db.Model):
     __tablename__ = 'Admin_Data'
 
