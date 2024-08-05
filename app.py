@@ -141,11 +141,11 @@ def admin_routes():
             flash('Invalid username or password')               #if login fails
         return render_template('admin_login.html')
 
-    @app.route('/admin/dashboard',methods=['GET', 'POST'])
-    def admin_dashboard():
+    @app.route('/admin',methods=['GET', 'POST'])
+    def admin():
         if 'admin' not in session:
             return redirect(url_for('admin_login'))
-        return render_template('admin_dashboard.html')
+        return render_template('admin.html')
 
     @app.route('/admin/logout',methods=['GET', 'POST'])
     def admin_logout():
@@ -178,7 +178,7 @@ def admin_dashboard_content():
         about_section = AboutSection.query.all()
         return render_template('admin_dashboard.html',about_section=about_section )
 
-    @app.route('/admin/dashboard/edit_about',method=["PUT"])
+    @app.route('/admin/dashboard/edit_about',methods=["PUT"])
     def edit_about():
         about_section = AboutSection.query.all()
         data = request.get_json()
@@ -214,7 +214,7 @@ def admin_dashboard_content():
         project = ProjectData.query.get_or_404(id)
         return render_template('admin_dashboard.html', project= project)
     
-    @app.route('/admin/dashboard/edit_projects/<int:id>',method=["PUT"])
+    @app.route('/admin/dashboard/edit_projects/<int:id>',methods=["PUT"])
     def edit_projects(id):
         project = ProjectData.query.get_or_404(id)
         data = request.get_json()
