@@ -19,11 +19,22 @@ def create_app():
     with app.app_context():
         db.create_all()  # Create tables based on the model definitions
 
-    
+        
     return app
 
 app= create_app()
 migrate = Migrate(app, db)
+
+
+
+def create_admin_user(username, password):
+    admin = AdminData(username=username)
+    admin.set_password(password)
+    db.session.add(admin)
+    db.session.commit()
+
+
+
 
 @app.route('/')
 def index():
@@ -291,6 +302,7 @@ if __name__ == '__main__':
     admin_routes()
     blog_post_routes()
     admin_dashboard_content()
+    
     app.run(debug=True)
 
 
