@@ -150,7 +150,7 @@ def admin_routes():
             admin = AdminData.query.filter_by(username= username).first()
             if admin and admin.check_password(password):        #if admin record was found and password matches
                 session['admin'] = admin.username               #If the login is successful, the admin's username is stored in the session
-                return redirect(url_for('admin_dashboard'))
+                return redirect(url_for('admin'))
             flash('Invalid username or password')               #if login fails
         return render_template('admin_login.html')
 
@@ -159,6 +159,11 @@ def admin_routes():
         if 'admin' not in session:
             return redirect(url_for('admin_login'))
         return render_template('admin.html')
+    
+    @app.route('/admin/dashboard',methods=['GET', 'POST'])
+    def admin_dashboard():
+        
+        return render_template('admin_dashboard.html')
 
     @app.route('/admin/logout',methods=['GET', 'POST'])
     def admin_logout():
