@@ -28,7 +28,9 @@ migrate = Migrate(app, db)
 
 
 def create_admin_user(username, password):
+    # Create a new AdminData instance with the provided username
     admin = AdminData(username=username)
+    # Hash the provided password and store it in the admin instance
     admin.set_password(password)
     db.session.add(admin)
     db.session.commit()
