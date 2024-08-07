@@ -13,7 +13,7 @@
   {% for post in posts %}
   <div
     class="blog-post"
-    action="{{ url_for('blog', id=post.id) }}"
+    action="{{ url_for('blog', id=post.blog_id) }}"
     method="GET"
     style="
       border: 1px solid #ccc;

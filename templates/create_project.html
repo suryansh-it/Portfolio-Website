@@ -2,7 +2,8 @@
 content %}
 <div class="container">
   <h1>Create New Project</h1>
-  <form id="create-project-form">
+  <form id="create-project-form" action="{{ url_for('add_project') }}">
+    >
     <div class="form-group">
       <label for="project_name">Name</label>
       <input
@@ -17,8 +18,8 @@ content %}
       <label for=" project_summary">Summary</label>
       <textarea
         class="form-control"
-        id=" project_summary"
-        name=" project_summary"
+        id="project_summary"
+        name="project_summary"
         rows="3"
         required
       ></textarea>
@@ -27,5 +28,5 @@ content %}
     <button type="submit" class="btn btn-primary">Create Project</button>
   </form>
 </div>
-<script src="static\js\create_project.js"></script>
+
 {% endblock %}

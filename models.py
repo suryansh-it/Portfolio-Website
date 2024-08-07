@@ -8,7 +8,7 @@ db = SQLAlchemy()
 class Visitor(db.Model):
     __tablename__ = 'Visitor'
 
-    id = db.Column(db.Integer, primary_key=True)
+    visitor_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80),   nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     subject = db.Column(db.String(80),  nullable=False)
@@ -23,7 +23,7 @@ class Visitor(db.Model):
 class BlogData(db.Model):
     __tablename__ = 'Blog_Data'
 
-    id = db.Column(db.Integer, primary_key=True)
+    blog_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80),   nullable=False)
     content = db.Column(db.Text , nullable=False)
     author = db.Column(db.String(80),  nullable=False)
@@ -38,15 +38,15 @@ class BlogData(db.Model):
 class CommentData(db.Model):
     __tablename__ = 'Comment_Data'
 
-    id = db.Column(db.Integer, primary_key=True)
+    comment_id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text , nullable=False)
     author = db.Column(db.String(80),  nullable=False)
     date_created = db.Column(db.DateTime, default=db.func.now())
-    blog_id = db.Column(db.Integer, db.ForeignKey('Blog_Data.id'), nullable= False) #blog_id fk references id in blog_data
+    blog_id_no = db.Column(db.Integer, db.ForeignKey('Blog_Data.blog_id'), nullable= False) #blog_id fk references id in blog_data
 
 class ProjectData(db.Model):
     __tablename__ = 'Project_Data'
-    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, primary_key=True)
     project_name = db.Column(db.String(80),  nullable=False)
     project_summary = db.Column(db.Text , nullable=False)
     

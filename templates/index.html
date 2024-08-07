@@ -5,7 +5,7 @@
 <footer>
   <div class="sticky-button">
     {% if 'admin' in session %}
-    <a href="{{ url_for('admin') }}" class="btn btn-primary">Admin Dashboard</a>
+    <a href="{{ url_for('admin') }}" class="btn btn-primary">Admin</a>
     {% else %}
     <a href="{{ url_for('admin_login') }}" class="btn btn-primary">Admin</a>
     {% endif %}

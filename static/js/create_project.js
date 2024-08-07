@@ -2,12 +2,12 @@ document
 .getElementById("create-project-form")
 .addEventListener("submit", function (event) {
   event.preventDefault();
-  const form = event.target;
-  const data = {
+  let form = event.target;
+  let data = {
     project_name: form.project_name.value,
     project_summary: form.project_summary.value,
   };
-  fetch("/create_project", {
+  fetch("/admin/dashboard/add_project", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,6 +17,6 @@ document
     .then((response) => response.json())
     .then((data) => {
       alert(data.messagecontent);
-      window.location.href = "/view_project";
+      window.location.href = "/admin_dashboard";
     });
 });

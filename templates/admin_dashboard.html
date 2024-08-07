@@ -1,102 +1,23 @@
-{%extends base.html%} {% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="container mt-5">
   <h1 class="text-center">Admin Dashboard</h1>
   <hr />
 
   <!-- About Section -->
   <section id="about-section">
-    <h2>About Section</h2>
-    <button
-      class="btn btn-primary"
-      data-toggle="modal"
-      data-target="#addAboutModal"
-    >
-      Add About Info
-    </button>
-    <button
-      class="btn btn-warning"
-      data-toggle="modal"
-      data-target="#editAboutModal"
-    >
-      Edit About Info
-    </button>
-    <!-- Add About Modal -->
-    <div
-      class="modal fade"
-      id="addAboutModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="addAboutModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addAboutModalLabel">Add About Info</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="addAboutForm">
-              <div class="form-group">
-                <label for="aboutContent">Content</label>
-                <textarea
-                  class="form-control"
-                  id="aboutContent"
-                  rows="5"
-                ></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">Add</button>
-            </form>
-          </div>
-        </div>
-      </div>
+    <div class="text-right">
+      <a href="{{ url_for('add_about') }}" class="btn btn-primary mb-3"
+        >Add About</a
+      >
     </div>
-    <!-- Edit About Modal -->
-    <div
-      class="modal fade"
-      id="editAboutModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="editAboutModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editAboutModalLabel">
-              Edit About Info
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="editAboutForm">
-              <div class="form-group">
-                <label for="editAboutContent">Content</label>
-                <textarea
-                  class="form-control"
-                  id="editAboutContent"
-                  rows="5"
-                ></textarea>
-              </div>
-              <button type="submit" class="btn btn-warning">Edit</button>
-            </form>
-          </div>
-        </div>
-      </div>
+    <div style="display: flex; justify-content: flex-end; align-items: center">
+      <form
+        action="{{ url_for('edit_about') }}"
+        method="POST"
+        style="display: inline; margin-right: 10px"
+      >
+        <button type="submit" class="btn btn-warning">Edit</button>
+      </form>
     </div>
   </section>
   <hr />
@@ -105,36 +26,59 @@
   <section id="projects-section">
     <h2>Projects Section</h2>
     <div class="text-right">
-      <a href="{{ url_for('create_blog') }}" class="btn btn-primary mb-3"
-        >Write a Blog Post</a
+      <a href="{{ url_for('add_project') }}" class="btn btn-primary mb-3"
+        >Add a Project</a
       >
     </div>
+
+    <!-- Form to enter project number -->
+    <div class="row">
+      <div class="col-md-6">
+        <form
+          action="{{ url_for('select_project', project_id=0) }}"
+          method="POST"
+        >
+          <div class="form-group">
+            <label for="projectNumber">Enter Project Number</label>
+            <input
+              type="number"
+              class="form-control"
+              id="projectNumber"
+              name="project_number"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Select Project</button>
+        </form>
+      </div>
+    </div>
+    <hr />
+
+    <!-- Placeholder for project actions -->
+    {% for project in projects %}
     <div style="display: flex; justify-content: flex-end; align-items: center">
       <form
-        action="{{ url_for('update_blog', id=post.id) }}"
+        action="{{ url_for('edit_projects', project_id=project.id) }}"
+        method="POST"
         style="display: inline; margin-right: 10px"
       >
-        <button
-          type="submit"
-          class="btn btn-danger"
-          style="background-color: yellow; color: black"
-        >
-          Edit
-        </button>
+        <button type="submit" class="btn btn-warning">Edit</button>
       </form>
       <form
-        action="{{ url_for('delete_blog', id=post.id) }}"
+        action="{{ url_for('delete_project', project_id=project.id) }}"
+        method="POST"
         style="display: inline"
       >
         <button
           type="submit"
           class="btn btn-danger delete-button"
-          data-post-id="{{ post.id }}"
+          data-project-id="{{ project.id }}"
         >
           Delete
         </button>
       </form>
     </div>
+    {% endfor %}
   </section>
   <hr />
 
@@ -146,21 +90,18 @@
         >Write a Blog Post</a
       >
     </div>
+    {% for post in posts %}
     <div style="display: flex; justify-content: flex-end; align-items: center">
       <form
-        action="{{ url_for('update_blog', id=post.id) }}"
+        action="{{ url_for('update_blog', blog_id=post.id) }}"
+        method="POST"
         style="display: inline; margin-right: 10px"
       >
-        <button
-          type="submit"
-          class="btn btn-danger"
-          style="background-color: yellow; color: black"
-        >
-          Edit
-        </button>
+        <button type="submit" class="btn btn-warning">Edit</button>
       </form>
       <form
-        action="{{ url_for('delete_blog', id=post.id) }}"
+        action="{{ url_for('delete_blog', blog_id=post.id) }}"
+        method="POST"
         style="display: inline"
       >
         <button
@@ -172,7 +113,8 @@
         </button>
       </form>
     </div>
+    {% endfor %}
   </section>
 </div>
-<script src="static\js\delete_blog.js"></script>
-{%endblock%}
+<script src="{{ url_for('static', filename='js/delete_blog.js') }}"></script>
+{% endblock %}
