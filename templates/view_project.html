@@ -23,11 +23,11 @@ content %}
       <div class="project-description">
         <p>{{ project.project_summary }}</p>
       </div>
-      {% endfor %}
     </div>
-    {% else %}
-    <p>No projects available.</p>
-    {% endif %}
+    {% endfor %}
   </div>
+  {% else %}
+  <p>No projects available.</p>
+  {% endif %}
 </div>
 {% endblock %}

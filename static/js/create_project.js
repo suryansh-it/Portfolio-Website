@@ -1,12 +1,13 @@
-document
-.getElementById("create-project-form")
-.addEventListener("submit", function (event) {
-  event.preventDefault();
-  let form = event.target;
-  let data = {
-    project_name: form.project_name.value,
-    project_summary: form.project_summary.value,
-  };
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('create-project-form');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const data = {
+            project_name: form.project_name.value,
+            project_summary: form.project_summary.value,
+        };
   fetch("/admin/dashboard/add_project", {
     method: "POST",
     headers: {
@@ -17,6 +18,7 @@ document
     .then((response) => response.json())
     .then((data) => {
       alert(data.messagecontent);
-      window.location.href = "/admin_dashboard";
+      window.location.href = "/admin/dashboard";
     });
+});
 });

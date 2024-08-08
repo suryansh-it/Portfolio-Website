@@ -376,7 +376,7 @@
 
 
 from flask import Flask, render_template, request, jsonify, url_for, redirect, session, flash
-from models import db, Visitor, BlogData, CommentData, ProjectData, AdminData, AboutSection
+from models import db, Visitor, BlogData, ProjectData, AdminData, AboutSection
 from flask_migrate import Migrate
 
 def create_app():
