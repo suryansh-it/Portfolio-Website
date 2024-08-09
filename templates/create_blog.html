@@ -28,5 +28,6 @@
   <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
-<script src="static\js\create_blog.js"></script>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='create_blog.js') }}"></script>
 {% endblock %}

@@ -475,7 +475,10 @@ def admin():
 
 @app.route('/admin/dashboard', methods=['GET', 'POST'])
 def admin_dashboard():
-    return render_template('admin_dashboard.html')
+    selected_project = None
+    if 'selected_project_id' in session:
+        selected_project = ProjectData.query.get(session['selected_project_id'])
+    return render_template('admin_dashboard.html', project = selected_project)
 
 @app.route('/admin/logout', methods=['GET', 'POST'])
 def admin_logout():
@@ -534,13 +537,27 @@ def get_project(project_id):
 
 @app.route('/admin/dashboard/select_project/<int:project_id>', methods=['POST'])
 def select_project(project_id):
-    total_projects = ProjectData.query.count()
     project_number = request.form.get('project_number')
     
-    if project_number <= total_projects:
-        project_number = project_id
+    # Convert project_number to int and validate it
+    try:
+        project_number = int(project_number)
+    except ValueError:
+        flash("Invalid project number", "danger")
+        return redirect(url_for('admin_dashboard'))
+    
+    total_projects = ProjectData.query.count()
+    
+    if 1 <= project_number <= total_projects:
+        selected_project = ProjectData.query.filter_by(project_id=project_number).first()
+        if selected_project:
+            session['selected_project_id'] = selected_project.project_id
+            flash(f"Project {selected_project.project_name} selected", "success")
+        else:
+            flash("Project not found", "danger")
     else:
-        flash("Project not found", "danger")
+        flash("Project number out of range", "danger")
+    
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/dashboard/edit_projects/<int:project_id>', methods=["PUT"])
@@ -583,7 +600,7 @@ def get_blog(blog_id):
 @app.route('/admin/dashboard/select_blog/<int:blog_id>', methods=['POST'])
 def select_blog(blog_id):
     total_blogs = BlogData.query.count()
-    blog_number = request.form.get('blog_number')
+    blog_number = int(request.form.get('blog_number'))
     if blog_number:
         if blog_number <= total_blogs:
             blog_number = blog_id

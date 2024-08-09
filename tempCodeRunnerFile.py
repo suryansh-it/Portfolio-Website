@@ -1,1 +1,1 @@
-, 'GET'
+/admin/dashboard

@@ -4,7 +4,11 @@
   <hr />
 
   <!-- About Section -->
-  <section id="about-section">
+  <section
+    id="about-section"
+    style="border: 2px solid #000; padding: 15px; border-radius: 8px"
+  >
+    <h2>About Section</h2>
     <div class="text-right">
       <a href="{{ url_for('add_about') }}" class="btn btn-primary mb-3"
         >Add About</a
@@ -23,7 +27,10 @@
   <hr />
 
   <!-- Projects Section -->
-  <section id="projects-section">
+  <section
+    id="projects-section"
+    style="border: 2px solid #000; padding: 15px; border-radius: 8px"
+  >
     <h2>Projects Section</h2>
     <div class="text-right">
       <a href="{{ url_for('add_project') }}" class="btn btn-primary mb-3"
@@ -55,66 +62,58 @@
     <hr />
 
     <!-- Placeholder for project actions -->
-    {% for project in projects %}
-    <div style="display: flex; justify-content: flex-end; align-items: center">
-      <form
-        action="{{ url_for('edit_projects', project_id=project.id) }}"
-        method="POST"
-        style="display: inline; margin-right: 10px"
+    {% if project %}
+    <div id="project-details">
+      <h2>Selected Project: {{ project.project_name }}</h2>
+
+      <a
+        href="{{ url_for('edit_projects', project_id=project.project_id) }}"
+        class="btn btn-warning"
+        >Edit</a
       >
-        <button type="submit" class="btn btn-warning">Edit</button>
-      </form>
       <form
-        action="{{ url_for('delete_project', project_id=project.id) }}"
         method="POST"
+        action="{{ url_for('delete_project', project_id=project.project_id) }}"
         style="display: inline"
       >
-        <button
-          type="submit"
-          class="btn btn-danger delete-button"
-          data-project-id="{{ project.id }}"
-        >
-          Delete
-        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
       </form>
     </div>
-    {% endfor %}
+    {% endif %}
   </section>
   <hr />
 
   <!-- Blogs Section -->
-  <section id="blogs-section">
+  <section
+    id="blogs-section"
+    style="border: 2px solid #000; padding: 15px; border-radius: 8px"
+  >
     <h2>Blogs Section</h2>
     <div class="text-right">
       <a href="{{ url_for('create_blog') }}" class="btn btn-primary mb-3"
         >Write a Blog Post</a
       >
     </div>
-    {% for post in posts %}
-    <div style="display: flex; justify-content: flex-end; align-items: center">
-      <form
-        action="{{ url_for('update_blog', blog_id=post.id) }}"
-        method="POST"
-        style="display: inline; margin-right: 10px"
+    {% if blog %}
+    <div id="blog-details">
+      <h2>Selected Blog: {{ blog.title }}</h2>
+
+      <a
+        href="{{ url_for('edit_blog', blog_id=blog.id) }}"
+        class="btn btn-warning"
+        >Edit</a
       >
-        <button type="submit" class="btn btn-warning">Edit</button>
-      </form>
       <form
-        action="{{ url_for('delete_blog', blog_id=post.id) }}"
         method="POST"
+        action="{{ url_for('delete_blog', blog_id=blog.id) }}"
         style="display: inline"
       >
-        <button
-          type="submit"
-          class="btn btn-danger delete-button"
-          data-post-id="{{ post.id }}"
-        >
-          Delete
-        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
       </form>
     </div>
-    {% endfor %}
+    {% endif %}
   </section>
 </div>
-<script src="{{ url_for('static', filename='js/delete_blog.js') }}"></script>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='delete_blog.js') }}"></script>
 {% endblock %}
