@@ -599,14 +599,29 @@ def get_blog(blog_id):
 
 @app.route('/admin/dashboard/select_blog/<int:blog_id>', methods=['POST'])
 def select_blog(blog_id):
+    blog_number = request.form.get('blog_number')
+    
+    # Convert blog_number to int and validate it
+    try:
+        blog_number = int(blog_number)
+    except ValueError:
+        flash("Invalid blog number", "danger")
+        return redirect(url_for('admin_dashboard'))
+    
     total_blogs = BlogData.query.count()
-    blog_number = int(request.form.get('blog_number'))
-    if blog_number:
-        if blog_number <= total_blogs:
-            blog_number = blog_id
+    
+    if 1 <= blog_number <= total_blogs:
+        selected_blog = BlogData.query.filter_by(blog_id=blog_number).first()
+        if selected_blog:
+            session['selected_blog_id'] = selected_blog.blog_id
+            flash(f"blog {selected_blog.title} selected", "success")
         else:
             flash("blog not found", "danger")
-    return redirect(url_for('admin_dashboard'))
+    else:
+        flash("blog number out of range", "danger")
+    
+    return redirect(url_for('admin_dashboard')) 
+
 
 @app.route('/admin/dashboard/update_blog/<int:blog_id>', methods=['PUT'])
 def update_blog(blog_id):
