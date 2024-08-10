@@ -530,10 +530,10 @@ def add_project():
         })
     return render_template('create_project.html')
 
-@app.route('/admin/dashboard/get_project/<int:project_id>', methods=['GET'])
-def get_project(project_id):
-    project = ProjectData.query.get_or_404(project_id)
-    return render_template('admin_dashboard.html', project=project)
+# @app.route('/admin/dashboard/get_project/<int:project_id>', methods=['GET'])
+# def get_project(project_id):
+#     project = ProjectData.query.get_or_404(project_id)
+#     return render_template('admin_dashboard.html', project=project)
 
 @app.route('/admin/dashboard/select_project/<int:project_id>', methods=['POST'])
 def select_project(project_id):
@@ -560,7 +560,13 @@ def select_project(project_id):
     
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/admin/dashboard/edit_projects/<int:project_id>', methods=["PUT"])
+
+@app.route('/admin/dashboard/get_project/<int:project_id>', methods=['GET'])
+def get_project(project_id):
+    project = ProjectData.query.get_or_404(project_id)
+    return render_template('edit_projects.html', project=project)
+
+@app.route('/admin/dashboard/edit_projects/<int:project_id>', methods=["PUT","GET"])
 def edit_projects(project_id):
     project = ProjectData.query.get_or_404(project_id)
     data = request.get_json()

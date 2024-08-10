@@ -1,12 +1,19 @@
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("edit-project-form").addEventListener("submit", function(event) {
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('create-project-form');
+
+    form.addEventListener('submit', function(event) {
         event.preventDefault();
-        let form = event.target;
+
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     document.getElementById("edit-project-form").addEventListener("submit", function(event) {
+//         event.preventDefault();
+//         let form = event.target;
 
     // Retrieve the post ID from the hidden input element
-        let projectId = document.getElementById("project-id").value; 
+        const projectId = document.getElementById("project-id").value; 
        
-        let data = {
+        const data = {
             title: form.title.value,
             content: form.content.value,
             
@@ -25,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             alert(data.message);
-            window.location.href = "/admin/admin_dashboard";
+            window.location.href = "/admin/dashboard";
         });
     });
 });
