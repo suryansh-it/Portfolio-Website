@@ -1,11 +1,11 @@
 {% extends "base.html" %} {% block content %}
 <h1>Update Blog Post</h1>
-<form id="update-blog-form">
+<form id="edit-project-form">
   <!-- includes hidden input post.id in form -->
   <input
     type="hidden"
-    id="post-id"
-    name="post-id"
+    id="project-id"
+    name="project-id"
     value="{{ project.project_id }}"
   />
 
@@ -37,5 +37,5 @@
 </form>
 
 {% endblock %} {%block script%}
-<script src="{{ url_for('static', filename='js/edit_blog.js') }}"></script>
+<script src="{{ url_for('static', filename='js/edit_project.js') }}"></script>
 {%endblock%}
