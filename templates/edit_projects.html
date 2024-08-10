@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block content %}
+<h1>Update Blog Post</h1>
+<form id="update-blog-form">
+  <!-- includes hidden input post.id in form -->
+  <input
+    type="hidden"
+    id="post-id"
+    name="post-id"
+    value="{{ project.project_id }}"
+  />
+
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input
+      type="text"
+      class="form-control"
+      id="title"
+      name="title"
+      value="{{ project.project_name }}"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="content">Content</label>
+    <textarea
+      class="form-control"
+      id="content"
+      name="content"
+      rows="5"
+      required
+    >
+{{ project.project_summary }}</textarea
+    >
+  </div>
+
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>
+
+{% endblock %} {%block script%}
+<script src="{{ url_for('static', filename='js/edit_blog.js') }}"></script>
+{%endblock%}
