@@ -1,21 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('create-project-form');
+
+    console.log('edit_project.js script loaded');
+    const form = document.getElementById('edit-project-form');
 
     form.addEventListener('submit', function(event) {
+
+
         event.preventDefault();
 
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     document.getElementById("edit-project-form").addEventListener("submit", function(event) {
-//         event.preventDefault();
-//         let form = event.target;
 
-    // Retrieve the post ID from the hidden input element
         const projectId = document.getElementById("project-id").value; 
        
         const data = {
-            title: form.title.value,
-            content: form.content.value,
+            project_name: document.getElementById("project_name").value,
+            project_summary: document.getElementById("project_summary").value
             
         };
 

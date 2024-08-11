@@ -65,7 +65,7 @@
     {% if project %}
     <div id="project-details">
       <h2>Selected Project: {{ project.project_name }}</h2>
-
+      <!-- not working : js not loading -->
       <a
         href="{{ url_for('edit_projects', project_id=project.project_id) }}"
         class="btn btn-warning"
@@ -94,7 +94,7 @@
         >Write a Blog Post</a
       >
     </div>
-    <!-- Form to enter project number -->
+    <!-- Form to enter blog number -->
     <div class="row">
       <div class="col-md-6">
         <form action="{{ url_for('select_blog', blog_id=0) }}" method="POST">
@@ -136,4 +136,6 @@
 </div>
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='delete_blog.js') }}"></script>
+<script src="{{ url_for('static', filename='delete_project.js') }}"></script>
+
 {% endblock %}

@@ -561,21 +561,24 @@ def select_project(project_id):
     return redirect(url_for('admin_dashboard'))
 
 
-@app.route('/admin/dashboard/get_project/<int:project_id>', methods=['GET'])
-def get_project(project_id):
-    project = ProjectData.query.get_or_404(project_id)
-    return render_template('edit_projects.html', project=project)
+# @app.route('/admin/dashboard/get_project/<int:project_id>', methods=['GET'])
+# def get_project(project_id):
+#     project = ProjectData.query.get_or_404(project_id)
+#     return render_template('edit_projects.html', project=project)
 
 @app.route('/admin/dashboard/edit_projects/<int:project_id>', methods=["PUT","GET"])
 def edit_projects(project_id):
     project = ProjectData.query.get_or_404(project_id)
-    data = request.get_json()
-    project.project_name = data.get('project_name', project.project_name)
-    project.project_summary = data.get('project_summary', project.project_summary)
-    db.session.commit()
-    return jsonify({'message': 'project updated', 'project_name': project.project_name})
+    if request.method == "PUT":
+        
+        data = request.get_json()
+        project.project_name = data.get('project_name', project.project_name)
+        project.project_summary = data.get('project_summary', project.project_summary)
+        db.session.commit()
+        return jsonify({'message': 'project updated', 'project_name': project.project_name})
+    return render_template('edit_projects.html', project=project)
 
-@app.route('/admin/dashboard/delete_project/<int:project_id>', methods=['DELETE'])
+@app.route('/admin/dashboard/delete_project/<int:project_id>', methods=['DELETE','GET'])
 def delete_project(project_id):
     project = ProjectData.query.get_or_404(project_id)
     db.session.delete(project)

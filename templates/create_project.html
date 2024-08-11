@@ -30,4 +30,7 @@ content %}
     <button type="submit" class="btn btn-primary">Create Project</button>
   </form>
 </div>
+
+{%block script%}
+<script src="{{ url_for('static', filename='js/create_project.js') }}"></script>
 {% endblock %}
