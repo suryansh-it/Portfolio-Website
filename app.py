@@ -475,9 +475,11 @@ def admin():
 
 @app.route('/admin/dashboard', methods=['GET', 'POST'])
 def admin_dashboard():
+    selected_project_id = session.get('selected_project_id')
     selected_project = None
-    if 'selected_project_id' in session:
-        selected_project = ProjectData.query.get(session['selected_project_id'])
+    if 'selected_project_id' :
+        selected_project = ProjectData.query.get(selected_project_id)
+    
     return render_template('admin_dashboard.html', project = selected_project)
 
 @app.route('/admin/logout', methods=['GET', 'POST'])
@@ -535,9 +537,10 @@ def add_project():
 #     project = ProjectData.query.get_or_404(project_id)
 #     return render_template('admin_dashboard.html', project=project)
 
-@app.route('/admin/dashboard/select_project/<int:project_id>', methods=['POST','GET'])
+@app.route('/admin/dashboard/select_project/<int:project_id>', methods=['POST'])
 def select_project(project_id):
-    project_number = request.form.get('project_number')
+    data = request.get_json()
+    project_number = data.get('project_number')
     
     # Convert project_number to int and validate it
     try:

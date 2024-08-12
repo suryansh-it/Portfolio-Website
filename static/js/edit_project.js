@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         // Use the postId variable directly in the URL
-        fetch(`/admin/dashboard/edit_projects/${projectId}`, {
+        fetch(`http://127.0.0.1:5000/admin/dashboard/edit_projects/${projectId}`, {
 
             // passing PUT method in JS;html only works POST,GET
             method: "PUT",

@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Sending data:', data);
 
 
-      fetch('/form', {
+      fetch('http://127.0.0.1:5000/form', {
         method: 'POST', // specifying request method 
         headers: {'Content-Type': 'application/json'}, // content type set to json
         body: JSON.stringify(data) // convert data obj to json

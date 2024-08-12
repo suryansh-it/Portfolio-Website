@@ -41,7 +41,7 @@
     <!-- Form to enter project number -->
     <div class="row">
       <div class="col-md-6">
-        <form action="{{ url_for('select_project', project_id=0) }}">
+        <form method="POST" action="{{ url_for('select_project') }}">
           <div class="form-group">
             <label for="projectNumber">Enter Project Number</label>
             <input
@@ -56,6 +56,7 @@
         </form>
       </div>
     </div>
+
     <hr />
 
     <!-- Placeholder for project actions -->

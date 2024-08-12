@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
             };
             
             // Send a POST request to the "/create_blog" endpoint
-            fetch("/create_blog", {
+            fetch("http://127.0.0.1:5000/create_blog", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json", // Set the request content type to JSON
