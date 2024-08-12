@@ -537,11 +537,10 @@ def add_project():
 #     project = ProjectData.query.get_or_404(project_id)
 #     return render_template('admin_dashboard.html', project=project)
 
-@app.route('/admin/dashboard/select_project/<int:project_id>', methods=['POST'])
-def select_project(project_id):
-    data = request.get_json()
-    project_number = data.get('project_number')
+@app.route('/admin/dashboard/select_project', methods=['POST'])
+def select_project():
     
+    project_number = request.form.get('project_number')
     # Convert project_number to int and validate it
     try:
         project_number = int(project_number)
