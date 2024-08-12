@@ -41,10 +41,7 @@
     <!-- Form to enter project number -->
     <div class="row">
       <div class="col-md-6">
-        <form
-          action="{{ url_for('select_project', project_id=0) }}"
-          method="POST"
-        >
+        <form action="{{ url_for('select_project', project_id=0) }}">
           <div class="form-group">
             <label for="projectNumber">Enter Project Number</label>
             <input
@@ -134,8 +131,8 @@
     {% endif %}
   </section>
 </div>
-{% endblock %} {% block scripts %}
+{% block scripts %}
 <script src="{{ url_for('static', filename='delete_blog.js') }}"></script>
 <script src="{{ url_for('static', filename='delete_project.js') }}"></script>
 
-{% endblock %}
+{% endblock %} {% endblock %}

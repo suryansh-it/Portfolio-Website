@@ -1,11 +1,16 @@
 {% extends "base.html" %} {% block title %}Add Project{% endblock %} {% block
 content %}
-<div class="container">
+<!-- <div class="container">
+  <div class="text-right">
+    <a href="{{ url_for('add_project') }}" class="btn btn-primary mb-3"
+      >Add a Project</a
+    >
+  </div> -->
   <h1>Create New Project</h1>
   <form
     id="create-project-form"
     action="{{ url_for('add_project') }}"
-    method="post"
+    
   >
     <div class="form-group">
       <label for="project_name">Name</label>
@@ -30,7 +35,7 @@ content %}
     <button type="submit" class="btn btn-primary">Create Project</button>
   </form>
 </div>
-
-{%block script%}
+{% block script %}
 <script src="{{ url_for('static', filename='js/create_project.js') }}"></script>
 {% endblock %}
+{% endblock %} 

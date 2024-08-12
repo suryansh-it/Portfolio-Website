@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
             project_name: form.project_name.value,
             project_summary: form.project_summary.value,
         };
-  fetch("/admin/dashboard/add_project", {
+  fetch("http://127.0.0.1:5000/admin/dashboard/add_project", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
