@@ -473,7 +473,7 @@ def admin():
         return redirect(url_for('admin_login'))
     return render_template('admin.html')
 
-@app.route('/admin/dashboard', methods=['GET', 'POST'])
+@app.route('/admin/dashboard', methods=['GET'])
 def admin_dashboard():
     selected_project_id = session.get('selected_project_id')
     selected_project = None
@@ -550,7 +550,8 @@ def select_project():
     
     total_projects = ProjectData.query.count()
     
-    if 1 <= project_number <= total_projects:
+    # if 1 <= project_number <= total_projects:
+    if project_number:
         selected_project = ProjectData.query.filter_by(project_id=project_number).first()
         if selected_project:
             session['selected_project_id'] = selected_project.project_id
@@ -608,8 +609,8 @@ def get_blog(blog_id):
     post = BlogData.query.get_or_404(blog_id)
     return render_template('update_blog.html', post=post)
 
-@app.route('/admin/dashboard/select_blog/<int:blog_id>', methods=['POST'])
-def select_blog(blog_id):
+@app.route('/admin/dashboard/select_blog', methods=['POST'])
+def select_blog():
     blog_number = request.form.get('blog_number')
     
     # Convert blog_number to int and validate it

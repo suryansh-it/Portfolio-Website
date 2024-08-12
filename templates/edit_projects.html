@@ -35,8 +35,7 @@
 
   <button type="submit" class="btn btn-primary">Update</button>
 </form>
-
-{% endblock %} {% block script %}
+{% block script %}
 
 <script src="{{ url_for('static', filename='js/edit_project.js') }}"></script>
-{% endblock %}
+{% endblock %} {% endblock %}
