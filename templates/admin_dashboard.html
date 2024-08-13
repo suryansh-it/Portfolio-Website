@@ -73,7 +73,13 @@
         action="{{ url_for('delete_project', project_id=project.project_id) }}"
         style="display: inline"
       >
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <button
+          type="submit"
+          class="delete-project btn btn-danger"
+          data-project-id="{{ project.project_id }}"
+        >
+          Delete
+        </button>
       </form>
     </div>
     {% endif %}
@@ -131,7 +137,7 @@
   </section>
 </div>
 {% block scripts %}
-<script src="{{ url_for('static', filename='delete_blog.js') }}"></script>
-<script src="{{ url_for('static', filename='delete_project.js') }}"></script>
+<script src="{{ url_for('static', filename='js/delete_blog.js') }}"></script>
+<script src="{{ url_for('static', filename='js/delete_project.js') }}"></script>
 
 {% endblock %} {% endblock %}
