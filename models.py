@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSON
-from datetime import datetime
+from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
@@ -8,11 +8,12 @@ db = SQLAlchemy()
 class Visitor(db.Model):
     __tablename__ = 'Visitor'
 
-    visitor_id = db.Column(db.Integer, primary_key=True)
+    visitor_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     name = db.Column(db.String(80),   nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     subject = db.Column(db.String(80),  nullable=False)
     message = db.Column(db.String(500),  nullable=False)
+    timestamp= db.Column(db.DateTime,  default=lambda: datetime.now(timezone.utc))
     # profile_data = db.Column(JSON)  # JSON column for storing arbitrary JSON data
 
 

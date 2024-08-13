@@ -1,4 +1,18 @@
-@app.route('/admin/dashboard/get_project/<int:project_id>', methods=['GET'])
-# def get_project(project_id):
-#     project = ProjectData.query.get_or_404(project_id)
-#     return render_template('admin_dashboard.html', project=project)
+@app.route('/form', methods=['POST', 'GET'])
+def form():
+    if request.method == 'POST':
+        data = request.get_json()
+        new_visitor = Visitor(
+            name=data['name'],
+            email=data['email'],
+            subject=data['subject'],
+            message=data.get('message', '')
+        )
+        db.session.add(new_visitor)
+        db.session.commit()
+
+        return jsonify({
+            'messagecontent': f'Form submitted successfully, name: {data["name"]}, email: {data["email"]}, '
+                            f'subject: {data["subject"]}, message: {data["message"]}'
+        })
+    return render_template('form.html')

@@ -480,7 +480,10 @@ def admin_dashboard():
     if 'selected_project_id' :
         selected_project = ProjectData.query.get(selected_project_id)
     
-    return render_template('admin_dashboard.html', project = selected_project)
+    visitors = Visitor.query.order_by(Visitor.timestamp.desc()).all()
+    
+
+    return render_template('admin_dashboard.html', project = selected_project,visitors=visitors)
 
 @app.route('/admin/logout', methods=['GET', 'POST'])
 def admin_logout():
@@ -651,6 +654,12 @@ def delete_blog(blog_id):
     db.session.delete(post)
     db.session.commit()
     return jsonify({'message': 'Blog post deleted'})
+
+
+# @app.route('/admin/dashboard/view_form', methods=['GET'])
+# def view_form():
+    
+
 
 if __name__ == '__main__':
     app.run(debug=True)

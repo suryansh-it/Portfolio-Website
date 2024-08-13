@@ -118,7 +118,7 @@
     <hr />
     <!-- Placeholder for project actions -->
     {% if post %}
-    <div id="project-details">
+    <div id="blog-details">
       <h2>Selected Project: {{ post.title }}</h2>
 
       <a
@@ -135,6 +135,39 @@
     </div>
     {% endif %}
   </section>
+  <hr />
+  <!-- Form Submissions Section -->
+  <section
+    id="form-section"
+    style="border: 2px solid #000; padding: 15px; border-radius: 8px"
+  >
+    <h2>Form Submissions</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Message</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for visitor in visitors %}
+        <tr>
+          <td>{{ visitor.visitor_id }}</td>
+          <td>{{ visitor.name }}</td>
+          <td>{{ visitor.email }}</td>
+          <td>{{ visitor.message }}</td>
+          <td>{{ visitor.timestamp }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  <br />
+  <br />
+  <br />
 </div>
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/delete_blog.js') }}"></script>
