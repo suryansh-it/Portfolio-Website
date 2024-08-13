@@ -613,10 +613,10 @@ def create_blog():
         })
     return render_template('create_blog.html')
 
-@app.route('/admin/dashboard/get_blog/<int:blog_id>', methods=['GET'])
-def get_blog(blog_id):
-    post = BlogData.query.get_or_404(blog_id)
-    return render_template('update_blog.html', post=post)
+# @app.route('/admin/dashboard/get_blog/<int:blog_id>', methods=['GET'])
+# def get_blog(blog_id):
+#     post = BlogData.query.get_or_404(blog_id)
+#     return render_template('update_blog.html', post=post)
 
 @app.route('/admin/dashboard/select_blog', methods=['POST'])
 def select_blog():
@@ -645,15 +645,18 @@ def select_blog():
     return redirect(url_for('admin_dashboard')) 
 
 
-@app.route('/admin/dashboard/update_blog/<int:blog_id>', methods=['PUT'])
+@app.route('/admin/dashboard/update_blog/<int:blog_id>', methods=["PUT","GET"])
 def update_blog(blog_id):
     post = BlogData.query.get_or_404(blog_id)
-    data = request.get_json()
-    post.title = data.get('title', post.title)
-    post.content = data.get('content', post.content)
-    post.author = data.get('author', post.author)
-    db.session.commit()
-    return jsonify({'message': 'Blog updated', 'title': post.title})
+    if request.method=="PUT":
+       
+        data = request.get_json()
+        post.title = data.get('title', post.title)
+        post.content = data.get('content', post.content)
+        post.author = data.get('author', post.author)
+        db.session.commit()
+        return jsonify({'message': 'Blog updated', 'title': post.title})
+    return render_template('update_blog.html', post=post)
 
 @app.route('/admin/dashboard/delete_blog/<int:blog_id>', methods=['DELETE'])
 def delete_blog(blog_id):
