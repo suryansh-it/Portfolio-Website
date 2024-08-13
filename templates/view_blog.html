@@ -14,7 +14,6 @@
   <div
     class="blog-post"
     action="{{ url_for('blog', id=post.blog_id) }}"
-    method="GET"
     style="
       border: 1px solid #ccc;
       padding: 15px;
@@ -62,9 +61,6 @@
 </div>
 {%else%}
 <p>No blog posts available. Please check back later!</p>
-{% endif %}
-<script src="static\js\delete_blog.js"></script>
-
-{% endblock %}
+{% endif %} {% endblock %}
 
 <!-- features to include in future: view , add and delete comments  -->

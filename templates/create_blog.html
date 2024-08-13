@@ -1,6 +1,8 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block title %}Create Block{% endblock %}{% block
+content %}
+
 <h1>Create Blog Post</h1>
-<form id="create-blog-form" action="{{ url_for('create_blog') }}" method="POST">
+<form id="create-blog-form" action="{{ url_for('create_blog') }}">
   <div class="form-group">
     <label for="title">Title</label>
     <input type="text" class="form-control" id="title" name="title" required />
@@ -28,6 +30,6 @@
   <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
-{% endblock %} {% block scripts %}
-<script src="{{ url_for('static', filename='create_blog.js') }}"></script>
-{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/create_blog.js') }}"></script>
+{% endblock %} {% endblock %}
