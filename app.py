@@ -658,7 +658,7 @@ def update_blog(blog_id):
         return jsonify({'message': 'Blog updated', 'title': post.title})
     return render_template('update_blog.html', post=post)
 
-@app.route('/admin/dashboard/delete_blog/<int:blog_id>', methods=['DELETE'])
+@app.route('/admin/dashboard/delete_blog/<int:blog_id>', methods=['DELETE','GET'])
 def delete_blog(blog_id):
     post = BlogData.query.get_or_404(blog_id)
     db.session.delete(post)
