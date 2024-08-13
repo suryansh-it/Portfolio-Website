@@ -480,10 +480,16 @@ def admin_dashboard():
     if 'selected_project_id' :
         selected_project = ProjectData.query.get(selected_project_id)
     
+
+    selected_blog_id = session.get('selected_blog_id')
+    selected_blog = None
+    if 'selected_blog_id' :
+        selected_blog = BlogData.query.get(selected_blog_id)
+
     visitors = Visitor.query.order_by(Visitor.timestamp.desc()).all()
     
 
-    return render_template('admin_dashboard.html', project = selected_project,visitors=visitors)
+    return render_template('admin_dashboard.html', project = selected_project,visitors=visitors, post = selected_blog)
 
 @app.route('/admin/logout', methods=['GET', 'POST'])
 def admin_logout():

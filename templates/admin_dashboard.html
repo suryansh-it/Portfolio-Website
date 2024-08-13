@@ -63,7 +63,7 @@
     {% if project %}
     <div id="project-details">
       <h2>Selected Project: {{ project.project_name }}</h2>
-      <!-- not working : js not loading -->
+
       <a
         href="{{ url_for('edit_projects', project_id=project.project_id) }}"
         class="btn btn-warning"
@@ -100,7 +100,7 @@
     <!-- Form to enter blog number -->
     <div class="row">
       <div class="col-md-6">
-        <form action="{{ url_for('select_blog', blog_id=0) }}" method="POST">
+        <form method="post" action="{{ url_for('select_blog') }}">
           <div class="form-group">
             <label for="blogNumber">Enter blog Number</label>
             <input
@@ -116,10 +116,10 @@
       </div>
     </div>
     <hr />
-    <!-- Placeholder for project actions -->
+    <!-- Placeholder for blog actions -->
     {% if post %}
     <div id="blog-details">
-      <h2>Selected Project: {{ post.title }}</h2>
+      <h2>Selected Blog: {{ post.title }}</h2>
 
       <a
         href="{{ url_for('update_blog', blog_id=post.blog_id) }}"

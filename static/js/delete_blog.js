@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Select all buttons with the class "delete-button" and attach an event listener to each
-    document.querySelectorAll(".delete-button").forEach(button => {
+    document.querySelectorAll(".delete-blog").forEach(button => {
         button.addEventListener("click", function(event) {
             // Prevent the default form submission
             event.preventDefault();
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Confirm with the user if they really want to delete the post
             if (confirm("Are you sure you want to delete this blog post?")) {
                 // Send a DELETE request to the server to delete the post with the specified ID
-                fetch(`http://127.0.0.1:5000/blog/${postId}`, {
+                fetch(`http://127.0.0.1:5000/admin/dashboard/${postId}`, {
                     method: "DELETE", // HTTP method for deletion
                     headers: {
                         "Content-Type": "application/json" // Specify the content type as JSON
