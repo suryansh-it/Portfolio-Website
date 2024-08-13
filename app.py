@@ -625,7 +625,8 @@ def select_blog():
     
     total_blogs = BlogData.query.count()
     
-    if 1 <= blog_number <= total_blogs:
+    # if 1 <= blog_number <= total_blogs:
+    if blog_number:
         selected_blog = BlogData.query.filter_by(blog_id=blog_number).first()
         if selected_blog:
             session['selected_blog_id'] = selected_blog.blog_id
