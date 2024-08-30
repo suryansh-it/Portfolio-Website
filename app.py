@@ -378,7 +378,7 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, session, flash
 from models import db, Visitor, BlogData, ProjectData, AdminData, AboutSection
 from flask_migrate import Migrate
-from flask_wtf import wtforms
+from flask_wtf import FlaskForm
 from wtforms import StringField , PasswordField , SubmitField
 from wtforms.validators import InputRequired , Length, ValidationError
 
@@ -407,6 +407,11 @@ def create_admin_user(username, password):
     db.session.commit()
 
 
+# Admin Login Form
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=20)])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=4, max=20)])
+    submit = SubmitField('Login')
 
 
 @app.route('/')
