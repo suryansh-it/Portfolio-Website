@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSON
 from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
@@ -57,7 +58,7 @@ class AboutSection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
 
-class AdminData(db.Model):
+class AdminData(db.Model, UserMixin):
     __tablename__ = 'Admin_Data'
 
     id = db.Column(db.Integer, primary_key=True)

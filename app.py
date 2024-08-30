@@ -378,6 +378,9 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, session, flash
 from models import db, Visitor, BlogData, ProjectData, AdminData, AboutSection
 from flask_migrate import Migrate
+from flask_wtf import wtforms
+from wtforms import StringField , PasswordField , SubmitField
+from wtforms.validators import InputRequired , Length, ValidationError
 
 def create_app():
     app = Flask(__name__)
@@ -402,6 +405,9 @@ def create_admin_user(username, password):
     admin.set_password(password)
     db.session.add(admin)
     db.session.commit()
+
+
+
 
 @app.route('/')
 def index():
